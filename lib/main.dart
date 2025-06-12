@@ -15,16 +15,23 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => WelcomeBloc(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create:  (context) => WelcomeBloc(),),
+        BlocProvider(create:  (context) => AppBloc(),)
+      ],
       child: ScreenUtilInit(
         builder: (context, child) =>MaterialApp(
+          debugShowCheckedModeBanner: false,
           title: 'Flutter Demo',
           theme: ThemeData(
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
           ),
           home: Welcome(),
+          routes: {
+            "myHomePage":(context)=>MyHomePage(),
+          }
         ) ,
       ),
     );
@@ -64,11 +71,13 @@ class MyHomePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             FloatingActionButton(
+              heroTag: "increment",
               onPressed:  ()=>BlocProvider.of<AppBloc>(context).add(Increment()),
               tooltip: 'Increment',
               child: const Icon(Icons.add),
             ),
             FloatingActionButton(
+              heroTag: "decrement",
               onPressed:  ()=>BlocProvider.of<AppBloc>(context).add(Decrement()),
               tooltip: 'Decrement',
               child: const Icon(Icons.remove),

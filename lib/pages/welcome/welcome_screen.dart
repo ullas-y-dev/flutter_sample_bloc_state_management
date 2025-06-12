@@ -1,5 +1,6 @@
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application/main.dart';
 import 'package:flutter_application/pages/welcome/welcome_bloc/welcome_blocs.dart';
 import 'package:flutter_application/pages/welcome/welcome_bloc/welcome_events.dart';
 import 'package:flutter_application/pages/welcome/welcome_bloc/welcome_states.dart';
@@ -14,26 +15,28 @@ class Welcome extends StatefulWidget {
 }
 
 class _WelcomeState extends State<Welcome> {
+  PageController pageController = PageController(initialPage: 0);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<WelcomeBloc,WelcomeState>(
-        builder: (context, state){
-          return Container(
+        body: BlocBuilder<WelcomeBloc, WelcomeState>(builder: (context, state) {
+      return Container(
         margin: EdgeInsets.symmetric(horizontal: 10.w),
         child: Stack(
           alignment: Alignment.center,
           children: [
             PageView(
-              onPageChanged: (value){
-                state.page=value;
+              controller: pageController,
+              onPageChanged: (value) {
+                state.page = value;
                 BlocProvider.of<WelcomeBloc>(context).add(WelcomeEvent());
               },
               children: [
                 _page(
                     buildContext: context,
                     buttonName: "next",
-                    imagePath: "Image Path",
+                    imagePath: "assets/images/reading.png",
                     index: 1,
                     subTitle:
                         "Forget  about a for of paper all knowledge in one learning ",
@@ -41,7 +44,7 @@ class _WelcomeState extends State<Welcome> {
                 _page(
                     buildContext: context,
                     buttonName: "next",
-                    imagePath: "Image Path",
+                    imagePath: "assets/images/boy.png",
                     index: 2,
                     subTitle:
                         "Always keep in touch with your tutor & friend, Let's get connected",
@@ -49,7 +52,7 @@ class _WelcomeState extends State<Welcome> {
                 _page(
                     buildContext: context,
                     buttonName: "get started",
-                    imagePath: "Image Path",
+                    imagePath: "assets/images/man.png",
                     index: 3,
                     subTitle:
                         "Anywhere, anytime. The time is our discrtion so study whenever you want",
@@ -57,24 +60,22 @@ class _WelcomeState extends State<Welcome> {
               ],
             ),
             Positioned(
-                bottom: 100.h,
-                child: DotsIndicator(
-                  position: state.page.toDouble(),
-                  dotsCount: 3,
-                  decorator: DotsDecorator(
-                      color: Colors.grey,
-                      activeColor: Colors.blue,
-                      activeSize: Size(20, 8),
-                      activeShape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5))),
-                ),
-                ),
+              bottom: 100.h,
+              child: DotsIndicator(
+                position: state.page.toDouble(),
+                dotsCount: 3,
+                decorator: DotsDecorator(
+                    color: Colors.grey,
+                    activeColor: Colors.blue,
+                    activeSize: Size(20, 8),
+                    activeShape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5))),
+              ),
+            ),
           ],
         ),
       );
-        }
-      )
-    );
+    }));
   }
 
   Widget _page(
@@ -89,7 +90,10 @@ class _WelcomeState extends State<Welcome> {
         Container(
             height: 345.w,
             margin: EdgeInsets.only(top: 34.h),
-            child: Text("Hi Image")),
+            child: Image.asset(
+              imagePath!,
+              fit: BoxFit.cover,
+            )),
         Text(
           "$title",
           style: TextStyle(fontSize: 24.sp),
@@ -104,13 +108,21 @@ class _WelcomeState extends State<Welcome> {
             style: ElevatedButton.styleFrom(
               fixedSize: Size(320.w, 50.h),
               elevation: 1,
-              backgroundColor: Colors.redAccent,
+              backgroundColor: Colors.blue,
               textStyle: TextStyle(
                 fontSize: 16.sp,
                 fontStyle: FontStyle.normal,
               ),
             ),
-            onPressed: () {},
+            onPressed: () {
+              if (index! < 3) {
+                pageController.animateToPage(index,
+                    duration: Duration(milliseconds: 1000),
+                    curve: Curves.decelerate);
+              } else {
+                Navigator.of(context).pushNamedAndRemoveUntil("myHomePage", (route)=>false)
+;              }
+            },
             child: Text(
               '$buttonName',
               style: TextStyle(
