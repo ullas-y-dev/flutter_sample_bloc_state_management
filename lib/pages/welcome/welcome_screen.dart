@@ -1,5 +1,6 @@
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application/common/values/colors.dart';
 import 'package:flutter_application/main.dart';
 import 'package:flutter_application/pages/welcome/welcome_bloc/welcome_blocs.dart';
 import 'package:flutter_application/pages/welcome/welcome_bloc/welcome_events.dart';
@@ -65,8 +66,8 @@ class _WelcomeState extends State<Welcome> {
                 position: state.page.toDouble(),
                 dotsCount: 3,
                 decorator: DotsDecorator(
-                    color: Colors.grey,
-                    activeColor: Colors.blue,
+                    color: AppColors.primaryThirdElementText,
+                    activeColor: AppColors.primaryElement,
                     activeSize: Size(20, 8),
                     activeShape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5))),
@@ -96,11 +97,13 @@ class _WelcomeState extends State<Welcome> {
             )),
         Text(
           "$title",
-          style: TextStyle(fontSize: 24.sp),
+          style: TextStyle(fontSize: 24.sp,
+          color: AppColors.primaryText),
         ),
         Text(
           "$subTitle",
-          style: TextStyle(fontSize: 14.sp),
+          style: TextStyle(fontSize: 14.sp,
+          color: AppColors.primarySecondaryElementText),
         ),
         Container(
           margin: EdgeInsets.only(top: 100.h),
@@ -108,7 +111,7 @@ class _WelcomeState extends State<Welcome> {
             style: ElevatedButton.styleFrom(
               fixedSize: Size(320.w, 50.h),
               elevation: 1,
-              backgroundColor: Colors.blue,
+              backgroundColor: AppColors.primaryElement,
               textStyle: TextStyle(
                 fontSize: 16.sp,
                 fontStyle: FontStyle.normal,
@@ -120,7 +123,7 @@ class _WelcomeState extends State<Welcome> {
                     duration: Duration(milliseconds: 1000),
                     curve: Curves.decelerate);
               } else {
-                Navigator.of(context).pushNamedAndRemoveUntil("myHomePage", (route)=>false)
+                Navigator.of(context).pushNamedAndRemoveUntil("signIn", (route)=>false)
 ;              }
             },
             child: Text(
