@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application/appblocs.dart';
 import 'package:flutter_application/appevents.dart';
 import 'package:flutter_application/appstates.dart';
+import 'package:flutter_application/pages/signin/signin.dart';
 import 'package:flutter_application/pages/welcome/welcome_bloc/welcome_blocs.dart';
 import 'package:flutter_application/pages/welcome/welcome_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,30 +18,37 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create:  (context) => WelcomeBloc(),),
-        BlocProvider(create:  (context) => AppBloc(),)
+        BlocProvider(
+          create: (context) => WelcomeBloc(),
+        ),
+        BlocProvider(
+          create: (context) => AppBloc(),
+        )
       ],
       child: ScreenUtilInit(
-        builder: (context, child) =>MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Flutter Demo',
-          theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-            useMaterial3: true,
-          ),
-          home: Welcome(),
-          routes: {
-            "myHomePage":(context)=>MyHomePage(),
-          }
-        ) ,
+        builder: (context, child) => MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Flutter Demo',
+            theme: ThemeData(
+              appBarTheme:
+                  AppBarTheme(backgroundColor: Colors.white, elevation: 0),
+              colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+              useMaterial3: true,
+            ),
+            home: Welcome(),
+            routes: {
+              "myHomePage": (context) => MyHomePage(),
+              "signIn": (context) => SignIn()
+            }),
       ),
     );
   }
 }
 
 class MyHomePage extends StatelessWidget {
-  const MyHomePage({super.key, });
-
+  const MyHomePage({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -72,13 +80,15 @@ class MyHomePage extends StatelessWidget {
           children: [
             FloatingActionButton(
               heroTag: "increment",
-              onPressed:  ()=>BlocProvider.of<AppBloc>(context).add(Increment()),
+              onPressed: () =>
+                  BlocProvider.of<AppBloc>(context).add(Increment()),
               tooltip: 'Increment',
               child: const Icon(Icons.add),
             ),
             FloatingActionButton(
               heroTag: "decrement",
-              onPressed:  ()=>BlocProvider.of<AppBloc>(context).add(Decrement()),
+              onPressed: () =>
+                  BlocProvider.of<AppBloc>(context).add(Decrement()),
               tooltip: 'Decrement',
               child: const Icon(Icons.remove),
             ),
