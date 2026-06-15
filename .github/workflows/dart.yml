@@ -11,7 +11,7 @@ jobs:
     steps:
       # Checkout source code
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Setup Flutter
       - name: Setup Flutter
@@ -31,15 +31,16 @@ jobs:
       - name: Build AAB
         run: flutter build appbundle --release
 
-      # Upload artifacts (APK + AAB)
+      # Upload APK artifact
       - name: Upload APK
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: release-apk
           path: build/app/outputs/flutter-apk/app-release.apk
 
+      # Upload AAB artifact
       - name: Upload AAB
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: release-aab
           path: build/app/outputs/bundle/release/app-release.aab
